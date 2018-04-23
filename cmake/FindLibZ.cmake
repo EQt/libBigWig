@@ -1,3 +1,5 @@
+include(ExternalProject)
+
 find_package(ZLIB)
 
 if (NOT ZLIB_FOUND)
