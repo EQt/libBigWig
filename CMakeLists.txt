@@ -19,3 +19,7 @@ target_link_libraries(BigWig ${ZLIB_LIBRARY})
 if (TARGET zlib)
     add_dependencies(BigWig zlib)
 endif()
+
+if (WIN32)
+    add_definitions(-DNOCURL)
+endif()

@@ -51,4 +51,8 @@ add_library(BigWig SHARED""", file=cm)
         print("if (TARGET zlib)", file=cm)
         print("    add_dependencies(BigWig zlib)", file=cm)
         print("endif()", file=cm)
+        print("""
+if (WIN32)
+    add_definitions(-DNOCURL)
+endif()""", file=cm)
         # zlib_extern(cm)
