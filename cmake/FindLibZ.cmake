@@ -8,7 +8,7 @@ if (NOT ZLIB_FOUND)
   set(LIBZ_INSTALL_DIR ${CMAKE_BINARY_DIR})
   externalProject_Add(zlib
     PREFIX  ${PROJECT_BINARY_DIR}/zlib
-    URL     http://zlib.net/zlib-1.2.8.tar.gz
+    URL     http://zlib.net/zlib-1.2.11.tar.gz
     URL_MD5 44d667c142d7cda120332623eab69f40
     UPDATE_COMMAND ""
     DOWNLOAD_DIR ${LIBZ_PREFIX}
