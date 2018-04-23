@@ -12,3 +12,4 @@ test/exampleWrite
 test/testRemoteManyContigs
 test/testBigBed
 test/testIterator
+build*/
