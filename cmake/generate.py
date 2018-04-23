@@ -33,7 +33,9 @@ if __name__ == '__main__':
     sources = [s.split(' ')[-1] for s in make[:-1]]
 
     with open("CMakeLists.txt", "w") as cm:
-        print("""project(bigwig)
+        print("""cmake_minimum_required(VERSION 3.0)
+
+project(bigwig)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 find_package(LibZ)
