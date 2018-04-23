@@ -39,6 +39,7 @@ project(bigwig)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 find_package(LibZ)
+find_package(CURL)
 
 include_directories(${ZLIB_INCLUDE_DIR})
 
@@ -52,7 +53,10 @@ add_library(BigWig SHARED""", file=cm)
         print("    add_dependencies(BigWig zlib)", file=cm)
         print("endif()", file=cm)
         print("""
-if (WIN32)
+if (CURL_FOUND)
+    include_directories(${CURL_INCLUDE_DIRS})
+    target_link_libraries(BigWig ${CURL_LIBRARIES})
+else()
     add_definitions(-DNOCURL)
 endif()""", file=cm)
         # zlib_extern(cm)
