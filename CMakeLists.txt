@@ -1,4 +1,9 @@
 project(bigwig)
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+find_package(LibZ)
+
+include_directories(${ZLIB_INCLUDE_DIR})
 
 add_library(BigWig SHARED
     io.c
@@ -8,7 +13,7 @@ add_library(BigWig SHARED
     bwWrite.c
 )
 
-externalproject_add(zlib
-    URL_MD5=44d667c142d7cda120332623eab69f40
-    URL=http://zlib.net/zlib-1.2.8.tar.gz
-)
+target_link_libraries(BigWig ${ZLIB_LIBRARY})
+if (TARGET zlib)
+    add_dependencies(BigWig zlib)
+endif()
