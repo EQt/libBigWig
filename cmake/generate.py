@@ -36,4 +36,4 @@ if __name__ == '__main__':
             print("   ", s, file=cm)
         print(")", file=cm)
         print(file=cm)
-        zlib_extern(cm)
+        # zlib_extern(cm)
