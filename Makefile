@@ -2,6 +2,7 @@ CC ?= gcc
 AR ?= ar
 RANLIB ?= ranlib
 CFLAGS ?= -g -Wall -O3 -Wsign-compare
+CFLAGS += -ansi -pedantic -std=c99 -Wno-pointer-arith
 LIBS = -lcurl -lm -lz
 EXTRA_CFLAGS_PIC = -fpic
 LDFLAGS =
