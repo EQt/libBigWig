@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Generate/update CMakeLists.txt by simulating make
 """
@@ -20,7 +21,7 @@ def zlib_extern(cm):
     print(")", file=cm)
 
 
-if __name__ == '__main__':
+def generate_cmakelists():
     os.chdir(os.path.join(os.path.dirname(__file__), '..'))
 
     make = sp.run("make --always-make --dry-run libBigWig.so".split(),
@@ -57,4 +58,8 @@ if (CURL_FOUND)
 else()
     add_definitions(-DNOCURL)
 endif()""", file=cm)
-        # zlib_extern(cm)
+
+
+if __name__ == '__main__':
+    generate_cmakelists()
+    # zlib_extern(cm)
