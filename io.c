@@ -1,10 +1,9 @@
 #ifndef NOCURL
-#include <curl/curl.h>
+#  include <curl/curl.h>
 #endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "bigWigIO.h"
 #include <inttypes.h>
 #include <errno.h>
