@@ -4,8 +4,10 @@ Generate/update CMakeLists.txt by simulating make
 """
 import subprocess as sp
 import yaml
+import re
 from os import path
 from six.moves.urllib import request
+
 
 header = """cmake_minimum_required(VERSION 3.0)
 
@@ -52,6 +54,19 @@ def generate_cmakelists(root):
     assert '-shared' in make[-1]
     sources = [s.split(' ')[-1] for s in make[:-1]]
 
+    tests = emulate_make('test', cwd=root)
+    tests = [t for t in tests if '-o test/' in t]
+    static_tests = [t for t in tests if 'libBigWig.a' in t]
+
+    def print_tests(cm):
+        print('include_directories(".")', file=cm)
+        print(file=cm)
+        for t in static_tests:
+            [name] = re.findall(r'-o test/(\w+)', t)
+            sources = ' '.join(re.findall(r'(test/\w+\.c)', t))
+            print(f"add_executable({name} {sources})", file=cm)
+            print(f"target_link_libraries({name} BigWigS)", file=cm)
+
     with open(path.join(root, "CMakeLists.txt"), "w") as cm:
         print(header, file=cm)
         print("add_library(BigWig SHARED", file=cm)
@@ -63,6 +78,16 @@ def generate_cmakelists(root):
         print("if (TARGET zlib)", file=cm)
         print("    add_dependencies(BigWig zlib)", file=cm)
         print("endif()", file=cm)
+        print(file=cm)
+
+        print("add_library(BigWigS STATIC", file=cm)
+        for s in sources:
+            print("  ", s, file=cm)
+        print(")", file=cm)
+        print(file=cm)
+
+        print_tests(cm)
+
         print(footer, file=cm)
 
 
