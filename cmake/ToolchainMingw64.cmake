@@ -8,8 +8,11 @@
 #    *) cd build
 #    *) cmake -DCMAKE_TOOLCHAIN_FILE=~/Toolchain-Ubuntu-mingw64.cmake ..
 #
-# In our case, we also need `zlib`:
-#   `sudo apt install libz-mingw-w64-dev`
+# Bear in mind, that the libz in the debian package
+# `libz-mingw-w64-dev` usually will be dynamically linked, i.e. you
+# would have to ship the `libz1.dll` with the program.  That is why,
+# we recommend to build zlib via `ExternalProject` (automatically done
+# if no zlib found; see FindLibZ.cmake).
 #
 
 set(CMAKE_SYSTEM_NAME Windows)

@@ -17,6 +17,7 @@ if (NOT ZLIB_FOUND)
                -DBUILD_TYPE=Release
                -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
                -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+               -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
   )
   # set_property(TARGET zlib PROPERTY FOLDER "extern")
 
