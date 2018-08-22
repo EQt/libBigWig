@@ -3,8 +3,8 @@
 Generate/update CMakeLists.txt by simulating make
 """
 import subprocess as sp
-import os
 import yaml
+from os import path
 from six.moves.urllib import request
 
 header = """cmake_minimum_required(VERSION 3.0)
@@ -27,7 +27,6 @@ else()
 endif()"""
 
 
-
 def raw_github(fname, owner="conda", repo="conda-recipes", branch="master"):
     return f"https://github.com/{owner}/{repo}/raw/{branch}/{fname}"
 
@@ -41,22 +40,21 @@ def zlib_extern(cm):
     print(")", file=cm)
 
 
-def emulate_make(target='libBigWig.so'):
-    os.chdir(os.path.join(os.path.dirname(__file__), '..'))
+def emulate_make(target='libBigWig.so', cwd=None):
     cmd = "make --always-make --dry-run " + target
-    return sp.run(cmd.split(), stdout=sp.PIPE).stdout.decode().split('\n')
+    return sp.run(cmd.split(), stdout=sp.PIPE, cwd=cwd).stdout.decode().split('\n')
 
 
-def generate_cmakelists():
-    make = emulate_make('libBigWig.so')
+def generate_cmakelists(root):
+    make = emulate_make('libBigWig.so', cwd=root)
     assert len(make) > 1, make
     assert make.pop() == ''
     assert '-shared' in make[-1]
     sources = [s.split(' ')[-1] for s in make[:-1]]
 
-    with open("CMakeLists.txt", "w") as cm:
+    with open(path.join(root, "CMakeLists.txt"), "w") as cm:
         print(header, file=cm)
-        print("add_library(BigWig SHARED")
+        print("add_library(BigWig SHARED", file=cm)
         for s in sources:
             print("   ", s, file=cm)
         print(")", file=cm)
@@ -69,5 +67,6 @@ def generate_cmakelists():
 
 
 if __name__ == '__main__':
-    generate_cmakelists()
+    root = path.join(path.dirname(__file__), '..')
+    generate_cmakelists(root=root)
     # zlib_extern(cm)
