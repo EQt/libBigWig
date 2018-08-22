@@ -2,11 +2,9 @@
 Generate/update CMakeLists.txt by simulating make
 """
 import subprocess as sp
-import re
 import os
 import yaml
 from six.moves.urllib import request
-
 
 
 def raw_github(fname, owner="conda", repo="conda-recipes", branch="master"):
