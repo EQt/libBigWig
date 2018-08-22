@@ -4,7 +4,7 @@ find_package(ZLIB)
 
 if (NOT ZLIB_FOUND)
   message(STATUS "compiling ZLIB myself")
-
+  set(LIBZ_PREFIX ".")
   set(LIBZ_INSTALL_DIR ${CMAKE_BINARY_DIR})
   externalProject_Add(zlib
     PREFIX  ${PROJECT_BINARY_DIR}/zlib
@@ -23,7 +23,7 @@ if (NOT ZLIB_FOUND)
   if (MSVC)
     set(ZLIBLIBNAME zlibstatic${POSTFIX}.lib)
     set(zlib_shared ${LIBZ_INSTALL_DIR}/lib/zlib${POSTFIX}.lib)
-  else(MINGW)
+  elseif(MINGW)
     set(ZLIBLIBNAME libzlibstatic.a)
     set(zlib_shared ${LIBZ_INSTALL_DIR}/lib/libzlib.dll.a)
   else()
