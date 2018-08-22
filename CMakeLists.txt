@@ -28,6 +28,7 @@ add_library(BigWigS STATIC
    bwStats.c
    bwWrite.c
 )
+target_link_libraries(BigWigS ${ZLIB_LIBRARY} m)
 
 include_directories(".")
 
@@ -47,6 +48,7 @@ target_link_libraries(testIterator BigWigS)
 if (CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
     target_link_libraries(BigWig ${CURL_LIBRARIES})
+    target_link_libraries(BigWigS ${CURL_LIBRARIES})
 else()
     add_definitions(-DNOCURL)
 endif()

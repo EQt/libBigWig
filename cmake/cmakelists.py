@@ -24,6 +24,7 @@ footer = """
 if (CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
     target_link_libraries(BigWig ${CURL_LIBRARIES})
+    target_link_libraries(BigWigS ${CURL_LIBRARIES})
 else()
     add_definitions(-DNOCURL)
 endif()"""
@@ -84,6 +85,7 @@ def generate_cmakelists(root):
         for s in sources:
             print("  ", s, file=cm)
         print(")", file=cm)
+        print("target_link_libraries(BigWigS ${ZLIB_LIBRARY} m)", file=cm)
         print(file=cm)
 
         print_tests(cm)
