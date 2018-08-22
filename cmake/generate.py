@@ -21,11 +21,14 @@ def zlib_extern(cm):
     print(")", file=cm)
 
 
-def generate_cmakelists():
+def emulate_make(target='libBigWig.so'):
     os.chdir(os.path.join(os.path.dirname(__file__), '..'))
+    cmd = "make --always-make --dry-run " + target
+    return sp.run(cmd.split(), stdout=sp.PIPE).stdout.decode().split('\n')
 
-    make = sp.run("make --always-make --dry-run libBigWig.so".split(),
-                  stdout=sp.PIPE).stdout.decode().split('\n')
+
+def generate_cmakelists():
+    make = emulate_make('libBigWig.so')
     assert len(make) > 1, make
     assert make.pop() == ''
     assert '-shared' in make[-1]
