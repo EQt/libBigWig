@@ -58,12 +58,15 @@ def generate_cmakelists(root):
     tests = emulate_make('test', cwd=root)
     tests = [t for t in tests if '-o test/' in t]
     static_tests = [t for t in tests if 'libBigWig.a' in t]
+    remote_prefix = 'testRemote'
 
     def print_tests(cm):
         print('include_directories(".")', file=cm)
         print(file=cm)
         for t in static_tests:
             [name] = re.findall(r'-o test/(\w+)', t)
+            if name.startswith(remote_prefix):
+                continue        # TODO print them separately (as they need curl)
             sources = ' '.join(re.findall(r'(test/\w+\.c)', t))
             print(f"add_executable({name} {sources})", file=cm)
             print(f"target_link_libraries({name} BigWigS)", file=cm)
