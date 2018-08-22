@@ -76,9 +76,6 @@ def generate_cmakelists(root):
         print(")", file=cm)
         print(file=cm)
         print("target_link_libraries(BigWig ${ZLIB_LIBRARY})", file=cm)
-        print("if (TARGET zlib)", file=cm)
-        print("    add_dependencies(BigWig zlib)", file=cm)
-        print("endif()", file=cm)
         print(file=cm)
 
         print("add_library(BigWigS STATIC", file=cm)

@@ -17,9 +17,6 @@ add_library(BigWig SHARED
 )
 
 target_link_libraries(BigWig ${ZLIB_LIBRARY})
-if (TARGET zlib)
-    add_dependencies(BigWig zlib)
-endif()
 
 add_library(BigWigS STATIC
    io.c
