@@ -7,6 +7,26 @@ import os
 import yaml
 from six.moves.urllib import request
 
+header = """cmake_minimum_required(VERSION 3.0)
+
+project(bigwig)
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+find_package(LibZ)
+find_package(CURL)
+
+include_directories(${ZLIB_INCLUDE_DIR})
+"""
+
+footer = """
+if (CURL_FOUND)
+    include_directories(${CURL_INCLUDE_DIRS})
+    target_link_libraries(BigWig ${CURL_LIBRARIES})
+else()
+    add_definitions(-DNOCURL)
+endif()"""
+
+
 
 def raw_github(fname, owner="conda", repo="conda-recipes", branch="master"):
     return f"https://github.com/{owner}/{repo}/raw/{branch}/{fname}"
@@ -35,17 +55,8 @@ def generate_cmakelists():
     sources = [s.split(' ')[-1] for s in make[:-1]]
 
     with open("CMakeLists.txt", "w") as cm:
-        print("""cmake_minimum_required(VERSION 3.0)
-
-project(bigwig)
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-
-find_package(LibZ)
-find_package(CURL)
-
-include_directories(${ZLIB_INCLUDE_DIR})
-
-add_library(BigWig SHARED""", file=cm)
+        print(header, file=cm)
+        print("add_library(BigWig SHARED")
         for s in sources:
             print("   ", s, file=cm)
         print(")", file=cm)
@@ -54,13 +65,7 @@ add_library(BigWig SHARED""", file=cm)
         print("if (TARGET zlib)", file=cm)
         print("    add_dependencies(BigWig zlib)", file=cm)
         print("endif()", file=cm)
-        print("""
-if (CURL_FOUND)
-    include_directories(${CURL_INCLUDE_DIRS})
-    target_link_libraries(BigWig ${CURL_LIBRARIES})
-else()
-    add_definitions(-DNOCURL)
-endif()""", file=cm)
+        print(footer, file=cm)
 
 
 if __name__ == '__main__':
