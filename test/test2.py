@@ -42,3 +42,7 @@ if __name__ == '__main__':
               "test creation from scratch with multiple interval types",
               "test/exampleWrite", check="example_output.bw",
               cwd=path.join(cwd, '..'))
+    check_md5("a15a3120c03ba44a81b025ebd411966c",
+              "ensured that we can properly parse chromosome trees",
+              "./testRemoteManyContigs http://hgdownload.cse.ucsc.edu/" +
+              "gbdb/dm6/bbi/gc5BaseBw/gc5Base.bw")
