@@ -13,8 +13,8 @@ from os import remove
 cwd = path.dirname(path.realpath(__file__))     # directory of this script
 
 
-def check_md5(md5, msg, cmd, check='-'):
-    print(msg.ljust(50), end='', flush=True)
+def check_md5(md5, msg, cmd, check='-', cwd=cwd, indent=60):
+    print(msg.ljust(indent), end='', flush=True)
     r = sp.check_output(cmd.split(), cwd=cwd)
     d = None
     if check == '-':
@@ -37,7 +37,8 @@ if __name__ == '__main__':
               "./testRemote http://hgdownload.cse.ucsc.edu/goldenPath/hg19/" +
               "encodeDCC/wgEncodeMapability/wgEncodeCrgMapabilityAlign50mer.bigWig")
     check_md5("8e116bd114ffd2eb625011d451329c03", "test recreating a file",
-              "./testWrite test.bw output.bw", "output.bw")
+              "./testWrite test.bw output.bw", check="output.bw")
     check_md5("ef104f198c6ce8310acc149d0377fc16",
               "test creation from scratch with multiple interval types",
-              "./exampleWrite", check="example_output.bw")
+              "test/exampleWrite", check="example_output.bw",
+              cwd=path.join(cwd, '..'))
